@@ -1,0 +1,55 @@
+matrix dimensions: 
+
+A * B = C
+
+A = M x K
+B = K x N
+C = M x N
+
+MAC: Computational throughput T, Single-op latency S, Total Latency L = S * V
+
+Assuming memory bottleneck (CAS, RAS > L):
+
+row_changes = int(K/bank_row_size)
+
+t_row = delay due to row changes = row_changes * tRAS
+
+col_changes = K
+
+t_col  =delay deu to col changes = col_changes * tCAS
+
+mv_time = (t_row + t_col)
+
+num_iters = ceil(N/V)
+
+matmul_time = mv_time * num_iters
+
+More generally:
+
+row_changes = int(K/bank_row_size)
+
+t_row = delay due to row changes = row_changes * max(L, tRAS)
+
+col_changes = K
+
+t_col = delay due to col changes = col_changes * max(L, tCAS)
+
+mv_time = (t_row + t_col)
+
+num_iters = ceil(N/V)
+
+matmul_time = mv_time * num_iters
+
+Number of operations per MAC: num_vec_in_gbuf
+
+suppose we are mostly concerned with tCAS
+If given an AMAT
+
+Criteria: 
+
+given AMAT = tCAS -> Optimal V: floor(tCAS/S) 
+given general AMAT -> v = floor(AMAT/S)
+
+
+
+
